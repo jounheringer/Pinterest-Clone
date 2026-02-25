@@ -16,18 +16,35 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -43,9 +60,13 @@ import pinterwork.composeapp.generated.resources.icons8_pinterest_logo_48
 fun LoginScreenWrapper() {
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun LoginScreen() {
-    Column(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
+    var email by remember { mutableStateOf("") }
+    Column(
+        modifier = Modifier.fillMaxSize().systemBarsPadding().imePadding()
+    ) {
         LoginHeader(modifier = Modifier.weight(1f))
         Text(
             modifier = Modifier.fillMaxWidth().padding(24.dp, 12.dp),
@@ -55,14 +76,33 @@ fun LoginScreen() {
             fontWeight = FontWeight.Bold
         )
         Column(
-            modifier = Modifier.fillMaxWidth().padding(24.dp, 12.dp).imePadding(),
+            modifier = Modifier.fillMaxWidth().padding(24.dp, 12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = "",
-                onValueChange = { },
+                value = email,
+                onValueChange = { email = it.trim() },
                 shape = MaterialTheme.shapes.medium,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.None,
+                    autoCorrectEnabled = false,
+                    keyboardType = KeyboardType.Unspecified,
+                    imeAction = ImeAction.Done,
+                    platformImeOptions = null,
+                    showKeyboardOnFocus = null,
+                    hintLocales = null
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {}
+                ),
+                trailingIcon = {
+                    if (email.isNotEmpty())
+                        IconButton(onClick = { email = "" }) {
+                            Icon(imageVector = Icons.Rounded.Close, contentDescription = "Limpar")
+                        }
+                },
                 label = {
                     Text(
                         text = "Endereço de email",
@@ -107,6 +147,38 @@ fun LoginScreen() {
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium
             )
+
+            if (email.isNotEmpty())
+                EmailCarrousel {
+                    email += it
+                }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun EmailCarrousel(onItemClicked: (String) -> Unit) {
+    val emailList = listOf("gmail", "hotmail", "outlook", "yahoo", "icloud", "bol", "live")
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        emailList.forEach {
+            item {
+                TextButton(
+                    onClick = { onItemClicked("@$it.com") },
+                    shapes = ButtonDefaults.shapes().copy(
+                        shape = MaterialTheme.shapes.medium
+                    ),
+                    colors = ButtonDefaults.buttonColors().copy(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                ) {
+                    Text(text = "@$it.com", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+
         }
     }
 }
