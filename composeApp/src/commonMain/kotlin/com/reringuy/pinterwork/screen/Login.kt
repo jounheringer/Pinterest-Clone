@@ -52,9 +52,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import org.jetbrains.compose.resources.painterResource
 import pinterwork.composeapp.generated.resources.Res
-import pinterwork.composeapp.generated.resources.compose_multiplatform
 import pinterwork.composeapp.generated.resources.icons8_google_48
 import pinterwork.composeapp.generated.resources.icons8_pinterest_logo_48
+import pinterwork.composeapp.generated.resources.image1
+import pinterwork.composeapp.generated.resources.image2
+import pinterwork.composeapp.generated.resources.image3
+import pinterwork.composeapp.generated.resources.image4
+import pinterwork.composeapp.generated.resources.image6
+import pinterwork.composeapp.generated.resources.image7
 
 @Composable
 fun LoginScreenWrapper() {
@@ -216,25 +221,25 @@ fun LoginHeader(modifier: Modifier) {
             contentDescription = "Pinterest"
         )
         Image(
-            painter = painterResource(resource = Res.drawable.compose_multiplatform),
+            painter = painterResource(resource = Res.drawable.image2),
             contentDescription = "Compose Multiplatform",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.size(64.dp, 128.dp).align(Alignment.Center).graphicsLayer {
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.size(128.dp).align(Alignment.Center).graphicsLayer {
                 scaleX = imageOneScale.value
                 scaleY = imageOneScale.value
                 transformOrigin = TransformOrigin.Center
             }
         )
         Image(
-            painter = painterResource(resource = Res.drawable.compose_multiplatform),
+            painter = painterResource(resource = Res.drawable.image3),
             contentDescription = "Compose Multiplatform",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.size(48.dp, 64.dp)
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.size(64.dp)
                 .zIndex(-1f)
                 .align { size, size1, _ ->
                     IntOffset(
                         x = size1.width / 2 + size.width / 2,
-                        y = size1.height / 2 - (size.height / 1.2).toInt()
+                        y = size1.height /2 + size.height / 2
                     )
                 }.graphicsLayer {
                     scaleX = imageOneScale.value
@@ -243,19 +248,19 @@ fun LoginHeader(modifier: Modifier) {
                 }
         )
         Image(
-            painter = painterResource(resource = Res.drawable.compose_multiplatform),
+            painter = painterResource(resource = Res.drawable.image4),
             contentDescription = "Compose Multiplatform",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.size(64.dp, 128.dp).align(Alignment.BottomStart).graphicsLayer {
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.size(128.dp).align(Alignment.BottomStart).graphicsLayer {
                 scaleX = imageTwoScale.value
                 scaleY = imageTwoScale.value
                 transformOrigin = TransformOrigin.Center
             }
         )
         Image(
-            painter = painterResource(resource = Res.drawable.compose_multiplatform),
+            painter = painterResource(resource = Res.drawable.image7),
             contentDescription = "Compose Multiplatform",
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Fit,
             modifier = Modifier.size(64.dp, 128.dp).graphicsLayer {
                 scaleX = imageThreeScale.value
                 scaleY = imageThreeScale.value
@@ -263,9 +268,9 @@ fun LoginHeader(modifier: Modifier) {
             }
         )
         Image(
-            painter = painterResource(resource = Res.drawable.compose_multiplatform),
+            painter = painterResource(resource = Res.drawable.image1),
             contentDescription = "Compose Multiplatform",
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Fit,
             modifier = Modifier.size(64.dp, 128.dp).align(Alignment.BottomEnd).padding(0.dp, 16.dp)
                 .graphicsLayer {
                     scaleX = imageThreeScale.value
@@ -274,9 +279,9 @@ fun LoginHeader(modifier: Modifier) {
                 }
         )
         Image(
-            painter = painterResource(resource = Res.drawable.compose_multiplatform),
+            painter = painterResource(resource = Res.drawable.image6),
             contentDescription = "Compose Multiplatform",
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Fit,
             modifier = Modifier.size(64.dp, 128.dp).align { size, size1, _ ->
                 IntOffset(
                     x = size1.width / 2 + (size.width * 2.2).toInt(),
