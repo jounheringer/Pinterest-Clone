@@ -1,7 +1,11 @@
 package com.reringuy.pinterwork
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,7 +17,7 @@ import com.reringuy.pinterwork.utils.ApplicationRoutes
 
 @Composable
 @Preview
-fun App(onNavHostReady: () -> Unit = {}) {
+fun App() {
     val navController = rememberNavController()
     MaterialTheme {
         NavHost(
@@ -22,7 +26,7 @@ fun App(onNavHostReady: () -> Unit = {}) {
         ) {
             composable<ApplicationRoutes.Login> {
                 LoginScreenWrapper {
-                    navController.navigate(ApplicationRoutes.LoginCredentials(it)){
+                    navController.navigate(ApplicationRoutes.LoginCredentials(it)) {
                         launchSingleTop = true
                     }
                 }
@@ -33,15 +37,22 @@ fun App(onNavHostReady: () -> Unit = {}) {
                     email = email,
                     onNavigateBack = { navController.popBackStack() },
                     onLogin = {
-                        navController.popBackStack(
-                            route = ApplicationRoutes.Home,
-                            inclusive = false
-                        )
+                        navController.navigate(ApplicationRoutes.Home) {
+                            popUpTo(ApplicationRoutes.Login::class) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
                     }
                 )
             }
             composable<ApplicationRoutes.Home> {
-
+                Text(
+                    modifier = Modifier.fillMaxSize(),
+                    text = "AAAAAAAAAAAAAAAAAAAAAAA",
+                    style = MaterialTheme.typography.displayLarge,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
