@@ -9,7 +9,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -17,18 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -42,17 +33,14 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.reringuy.pinterwork.component.EmailTextField
+import com.reringuy.pinterwork.component.GoogleButton
 import org.jetbrains.compose.resources.painterResource
 import pinterwork.composeapp.generated.resources.Res
-import pinterwork.composeapp.generated.resources.icons8_google_48
 import pinterwork.composeapp.generated.resources.icons8_pinterest_logo_48
 import pinterwork.composeapp.generated.resources.image1
 import pinterwork.composeapp.generated.resources.image2
@@ -62,12 +50,13 @@ import pinterwork.composeapp.generated.resources.image6
 import pinterwork.composeapp.generated.resources.image7
 
 @Composable
-fun LoginScreenWrapper() {
+fun LoginScreenWrapper(onNavigatToCredentials: (String) -> Unit) {
+    LoginScreen(onNavigatToCredentials)
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(onNavigatToCredentials: (String) -> Unit) {
     var email by remember { mutableStateOf("") }
     Column(
         modifier = Modifier.fillMaxSize().systemBarsPadding().imePadding()
@@ -84,68 +73,18 @@ fun LoginScreen() {
             modifier = Modifier.fillMaxWidth().padding(24.dp, 12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = email,
-                onValueChange = { email = it.trim() },
-                shape = MaterialTheme.shapes.medium,
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.None,
-                    autoCorrectEnabled = false,
-                    keyboardType = KeyboardType.Unspecified,
-                    imeAction = ImeAction.Done,
-                    platformImeOptions = null,
-                    showKeyboardOnFocus = null,
-                    hintLocales = null
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {}
-                ),
-                trailingIcon = {
-                    if (email.isNotEmpty())
-                        IconButton(onClick = { email = "" }) {
-                            Icon(imageVector = Icons.Rounded.Close, contentDescription = "Limpar")
-                        }
-                },
-                label = {
-                    Text(
-                        text = "Endereço de email",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
+            EmailTextField(value = email, onDone = {}) { email = it }
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = {},
+                onClick = { onNavigatToCredentials(email.trim()) },
+                enabled = email.isNotEmpty(),
                 shape = MaterialTheme.shapes.medium
             ) {
                 Text(text = "Continuar", style = MaterialTheme.typography.titleMedium)
             }
 
-            OutlinedButton(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {},
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(12.dp, 0.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Image(
-                        painter = painterResource(resource = Res.drawable.icons8_google_48),
-                        contentDescription = "Google"
-                    )
-                    Text(
-                        modifier = Modifier.weight(1f),
-                        text = "Continuar com o Google",
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
+            GoogleButton {  }
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
@@ -154,9 +93,7 @@ fun LoginScreen() {
             )
 
             if (email.isNotEmpty())
-                EmailCarrousel {
-                    email += it
-                }
+                EmailCarrousel { email += it }
         }
     }
 }
@@ -295,13 +232,5 @@ fun LoginHeader(modifier: Modifier) {
                 }
         )
 
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    MaterialTheme {
-        LoginScreen()
     }
 }
